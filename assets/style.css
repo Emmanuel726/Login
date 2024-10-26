@@ -1,0 +1,8 @@
+#fondo {
+    width: 100%;
+    height: 100vh;
+    background: url(/wallpaperbetter.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
+    filter: blur(10px);
+}

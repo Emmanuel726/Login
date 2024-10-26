@@ -1,13 +1,15 @@
 import reflex as rx
-
+# virtualenv --python C:\Path\To\Python\python.exe venv
+# .\venv\Scripts\activate
 from rxconfig import config
-
+from .auth import State2, AuthState
 
 class State(rx.State):
     """The app state."""
     
     x1 = "0"
     x2 = "100"
+    v = True
     
     def traslate(self): # Metodo para trasladar el Login y el Register
         if self.x1 == "0":
@@ -16,6 +18,12 @@ class State(rx.State):
         else:
             self.x1 = "0"
             self.x2 = "100"
+            
+    def cam(self):
+        if self.v:
+            self.v = False
+        else:
+            self.v = True
     ...
 
 style_a = { # -> Estilos para los componentes de la barra de navegacion
@@ -94,6 +102,7 @@ def contenedor() -> rx.Component: # -> Contenedor principal
                 rx.text("Login", color="white", font_weight ="bold", font="oblique bold 300% cursive", margin_top="80px"),
                 rx.input(
                     placeholder="User",
+                    on_blur=AuthState.set_username,
                     font_size = "100%",
                     width = "80%",
                     height = "10%",
@@ -102,6 +111,7 @@ def contenedor() -> rx.Component: # -> Contenedor principal
                 ),
                 rx.input(
                     placeholder="Password",
+                    on_blur=AuthState.set_password,
                     font_size = "100%",
                     width = "80%",
                     height = "10%",
@@ -120,6 +130,7 @@ def contenedor() -> rx.Component: # -> Contenedor principal
                 ),
                 rx.button(
                     rx.text("Login", size="4"),
+                    on_click=AuthState.login,
                     width = "80%",
                     height = "10%",
                     cursor = "pointer",
@@ -148,6 +159,7 @@ def contenedor() -> rx.Component: # -> Contenedor principal
                 rx.text("Register", color="white", font_weight ="bold", font="oblique bold 300% cursive", margin_top="20px"),
                 rx.input(
                     placeholder="User",
+                    on_blur=AuthState.set_username,
                     font_size = "100%",
                     width = "80%",
                     height = "10%",
@@ -156,6 +168,7 @@ def contenedor() -> rx.Component: # -> Contenedor principal
                 ),
                 rx.input(
                     placeholder="Email",
+                    on_blur=AuthState.set_email,
                     font_size = "100%",
                     width = "80%",
                     height = "10%",
@@ -164,6 +177,7 @@ def contenedor() -> rx.Component: # -> Contenedor principal
                 ),
                 rx.input(
                     placeholder="Password",
+                    on_blur=AuthState.set_password,
                     font_size = "100%",
                     width = "80%",
                     height = "10%",
@@ -173,6 +187,7 @@ def contenedor() -> rx.Component: # -> Contenedor principal
                 ),
                 rx.input(
                     placeholder="Repeat your Password",
+                    on_blur=AuthState.set_confirm_password,
                     font_size = "100%",
                     width = "80%",
                     height = "10%",
@@ -184,15 +199,18 @@ def contenedor() -> rx.Component: # -> Contenedor principal
                     rx.checkbox(
                         "Accept the terms and conditions",
                         spacing="2",
+                        on_change=State.cam(),
                     ),
                     align="start",
                 ),
                 rx.button(
                     rx.text("Register", size="4"),
+                    on_click=AuthState.signup,
                     width = "80%",
                     height = "10%",
                     cursor = "pointer",
-                    bg="#c4103d"
+                    bg="#c4103d",
+                    disabled=State.v
                 ),
                 rx.hstack(
                     rx.text("You already have an account.?", font_size = "15px"),
@@ -238,6 +256,12 @@ def contenedor() -> rx.Component: # -> Contenedor principal
             "border-radius": "10px",
             "margin-top": "20px",
         }
+    )
+
+@rx.page(route="/home", on_load=State2.check_login())
+def home() -> rx.Component:
+    return rx.flex(
+        rx.button('Logout', on_click=State2.logout)
     )
 
 @rx.page(route="/", title="Login")
