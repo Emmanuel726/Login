@@ -84,18 +84,21 @@ def fondo() -> rx.Component: # -> Imagen de fondo difuminado
             "background": "url(/wallpaperbetter.jpg) no-repeat",
             "background-size": "cover",
             "background-position": "center",
-            "filter": "blur(10px)",
-        }
+            #"filter": "blur(10px)",
+        },
+        filter=rx.breakpoints(initial="blur(0px)", sm="blur(0px)", md="blur(0px)", lg="blur(10px)", xl="blur(10px)"),
     )
 
 def contenedor() -> rx.Component: # -> Contenedor principal
     return rx.flex(
         rx.flex( # -> Contenedor para la descripcion de la web
             style={
-                "width": "55%",
+                #"width": "55%",
                 "height": "100%",
                 "border": "5px double transparent",
-            }
+            },
+            width=rx.breakpoints(initial="0%", sm="0%", md="0%", lg="55%", xl="55%"),
+            display=rx.breakpoints(initial="none", sm="none", md="none", lg="flex", xl="flex"),
         ),
         rx.flex( # -> Contenedor para el Login y el Register
             rx.flex( # -> Contenedor del Login
@@ -232,36 +235,43 @@ def contenedor() -> rx.Component: # -> Contenedor principal
                 spacing="4",
             ),
             style={ # -> Estilos para el contenedor del Login y el Register
-                "width": "45%",
+                #"width": "45%",
                 "height": "100%",
                 "border": "5px double transparent",
+                "border-radius": "10px",
                 "justify-content": "center",
                 "align-items": "center",
                 "overflow": "hidden",
                 "display": "flex",
                 "background": "transparent",
                 "backdrop-filter": "blur(20px)",
-            }
+            },
+            width=rx.breakpoints(initial="100%", sm="100%", md="100%", lg="45%", xl="45%"),
         ),
         style={ # -> Estilos para el contenedor principal
             "position": "absolute",
             "top": "50%",
             "left": "50%",
             "transform": "translate(-50%, -50%)",
-            "width": "75%",
+            #"width": "75%",
             "height": "80%",
             "background": "url('/wallpaperbetter.jpg') no-repeat",
             "background-size": "cover",
             "background-position": "center",
             "border-radius": "10px",
             "margin-top": "20px",
-        }
+        },
+        width=rx.breakpoints(initial="95%", sm="95%", md="75%", lg="75%", xl="75%"),
     )
 
 @rx.page(route="/home", on_load=State2.check_login())
 def home() -> rx.Component:
-    return rx.flex(
-        rx.button('Logout', on_click=State2.logout)
+    return rx.cond(
+        State2.loader,
+        rx.spinner(color="red", size="3"),
+        rx.flex(
+            rx.button('Logout', on_click=State2.logout)
+        ),
     )
 
 @rx.page(route="/", title="Login")

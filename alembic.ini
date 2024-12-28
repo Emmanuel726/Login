@@ -49,6 +49,7 @@ prepend_sys_path = .
 # version_path_separator = :
 # version_path_separator = ;
 # version_path_separator = space
+# version_path_separator = newline
 version_path_separator = os  # Use os.pathsep. Default configuration used for new projects.
 
 # set to 'true' to search source files recursively
@@ -91,12 +92,12 @@ keys = console
 keys = generic
 
 [logger_root]
-level = WARN
+level = WARNING
 handlers = console
 qualname =
 
 [logger_sqlalchemy]
-level = WARN
+level = WARNING
 handlers =
 qualname = sqlalchemy.engine
 

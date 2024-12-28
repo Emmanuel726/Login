@@ -3,20 +3,28 @@ from sqlmodel import select
 from typing import Optional
 from .db_model import User
 
+# def conect():
+#     engine = create_engine("mysql+pymysql://user:12345678@192.168.0.105:3306/reflex")
+#     return engine
+
 class State2(rx.State):
     """The base state for the app."""
 
     user: Optional[User] = None
+    loader = True
 
     def logout(self):
         """Log out a user."""
         self.reset()
+        self.loader = True
         return rx.redirect("/")
 
     def check_login(self):
         """Check if a user is logged in."""
         if not self.logged_in:
             return rx.redirect("/")
+        else:
+            self.loader = False
 
     @rx.var
     def logged_in(self):
