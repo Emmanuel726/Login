@@ -86,6 +86,14 @@ If this project helped you and you'd like to support its development, feel free 
 # 💳 Donaciones / Donations
 
 <div align="center">
+  <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=E35UMDRP8TKLW" target="_blank">
+    <img src="https://www.paypalobjects.com/webstatic/mktg/merchant_portal/button/donate.es.png" alt="Donar con PayPal" style="border: none;">
+  </a>
+</div>
+
+---
+
+<div align="center">
     <img src="binance.jpeg" width="400">
 </div>
 
